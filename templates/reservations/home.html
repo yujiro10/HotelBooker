@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid p-0 mb-5">
+    <div class="bg-dark text-white rounded overflow-hidden" style="min-height: 430px; background: linear-gradient(rgba(15, 23, 43, .65), rgba(15, 23, 43, .65)), radial-gradient(circle at 20% 20%, #1f3a8a, #0f172b);">
+        <div class="d-flex flex-column justify-content-center h-100 p-5">
+            <h6 class="section-title text-white text-uppercase mb-3">Luxury Living</h6>
+            <h1 class="display-4 text-white mb-4">Discover A Brand<br>Luxurious Hotel</h1>
+            <div class="d-flex gap-3 flex-wrap">
+                <a href="{% url 'chambre_list' %}" class="btn btn-primary py-3 px-5">Voir les chambres</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'reservation_create' %}" class="btn btn-light py-3 px-5">Reserver maintenant</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-light py-3 px-5">Reserver maintenant</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-xxl py-5">
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="bg-light rounded p-4 h-100">
+                <h6 class="section-title text-start text-primary text-uppercase">A propos de l'hotel</h6>
+                <h2 class="mb-3">Bienvenue a HotelBooker</h2>
+                <p class="mb-0">
+                    HotelBooker vous propose des chambres confortables, un service professionnel et
+                    une experience de reservation simple. Notre equipe vous accompagne pour des
+                    sejours affaires ou loisirs dans les meilleures conditions.
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="bg-light rounded p-4 h-100">
+                <h6 class="section-title text-start text-primary text-uppercase">Contact & Emplacement</h6>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-2"></i>Marrakech, Livernage 150</p>
+                <p class="mb-2"><i class="fa fa-phone-alt text-primary me-2"></i>0643999820</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary me-2"></i>baroudimohammed01@gmail.com</p>
+                <p class="mb-0"><i class="fa fa-clock text-primary me-2"></i>Reception ouverte 24h/24</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

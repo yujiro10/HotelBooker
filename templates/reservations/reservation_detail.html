@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h3 mb-3">Détail réservation</h1>
+<div class="card card-body">
+    <p><strong>Client :</strong> {{ reservation.client.get_full_name|default:reservation.client.username }}</p>
+    <p><strong>Chambre :</strong> {{ reservation.chambre.numero_chambre }} - {{ reservation.chambre.get_type_chambre_display }}</p>
+    <p><strong>Période :</strong> {{ reservation.date_debut }} au {{ reservation.date_fin }}</p>
+    <p><strong>Nombre de nuits :</strong> {{ reservation.nombre_nuits }}</p>
+    <p><strong>Statut :</strong> {{ reservation.statut }}</p>
+</div>
+{% endblock %}

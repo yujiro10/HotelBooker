@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HotelBooker</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-image:
+                linear-gradient(rgba(15, 23, 43, .60), rgba(15, 23, 43, .60)),
+                url("{% static 'background.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        /* keeps theme container readable */
+        .container-xxl.bg-white {
+            background-color: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Navbar sizing */
+        .hb-navbar {
+            min-height: 96px;
+        }
+        .hb-brand-text {
+            font-size: 1.4rem;
+        }
+        .hb-nav-link {
+            font-size: 1.05rem;
+            padding-top: 1.4rem !important;
+            padding-bottom: 1.4rem !important;
+            white-space: nowrap;
+        }
+
+        /* Keep navbar on one line (desktop) */
+        @media (min-width: 992px) {
+            /* Pull everything a bit more left/right */
+            .hb-navbar {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+            .hb-navbar-inner {
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+            #navbarCollapse {
+                flex-wrap: nowrap;
+            }
+            #navbarCollapse .navbar-nav {
+                flex-wrap: nowrap;
+                white-space: nowrap;
+            }
+            #navbarCollapse .navbar-nav .nav-link {
+                padding-left: .9rem !important;
+                padding-right: .9rem !important;
+            }
+            #navbarCollapse form {
+                flex: 0 0 auto;
+                white-space: nowrap;
+            }
+            #navbarCollapse .btn,
+            #navbarCollapse select {
+                white-space: nowrap;
+            }
+            /* Slightly tighter language selector so it fits */
+            #navbarCollapse select.form-select {
+                min-width: 115px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container-xxl bg-white p-0">
+    <div class="container-fluid bg-dark px-0 mb-4">
+        <div class="row gx-0">
+            <div class="col-lg-3 bg-dark d-none d-lg-block">
+                <a href="{% url 'home' %}" class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-start gap-3 ps-3">
+                    <img src="{% static 'logo1.png' %}" alt="HotelBooker logo" style="max-width: 140px; max-height: 80px; object-fit: contain;">
+                    <span class="m-0 text-primary text-uppercase fw-bold hb-brand-text" style="letter-spacing: 1px;">HotelBooker</span>
+                </a>
+            </div>
+            <div class="col-lg-9">
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark p-3 p-lg-0 hb-navbar">
+                    <a href="{% url 'home' %}" class="navbar-brand d-block d-lg-none">
+                        <span class="text-primary text-uppercase fw-bold">HotelBooker</span>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between align-items-center hb-navbar-inner" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0">
+                            <a href="{% url 'home' %}" class="nav-item nav-link hb-nav-link">Accueil</a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'chambre_list' %}" class="nav-item nav-link hb-nav-link">Chambres</a>
+                                <a href="{% url 'reservation_create' %}" class="nav-item nav-link hb-nav-link">Nouvelle réservation</a>
+                                <a href="{% url 'mes_reservations' %}" class="nav-item nav-link hb-nav-link">Mes réservations</a>
+                                {% if user.is_staff %}
+                                    <a href="/admin/" class="nav-item nav-link hb-nav-link">Admin</a>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'login' %}" class="nav-item nav-link hb-nav-link">Connexion</a>
+                            {% endif %}
+                        </div>
+                        {% if user.is_authenticated %}
+                            <form action="{% url 'logout' %}" method="post" class="m-0 my-2 my-lg-0">
+                                {% csrf_token %}
+                                <button class="btn btn-primary rounded-0 py-2 px-4" type="submit">Déconnexion</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <main class="container-xxl py-3">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'lib/wow/wow.min.js' %}"></script>
+<script src="{% static 'lib/easing/easing.min.js' %}"></script>
+<script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+<script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+<script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'lib/tempusdominus/js/moment.min.js' %}"></script>
+<script src="{% static 'lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
+<script src="{% static 'lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

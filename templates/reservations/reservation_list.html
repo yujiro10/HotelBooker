@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h2 mb-0">Mes réservations</h1>
+    <a href="{% url 'reservation_create' %}" class="btn btn-primary btn-lg">Nouvelle réservation</a>
+</div>
+
+<div class="bg-white shadow rounded">
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+            <tr>
+                {% if user.is_staff %}<th>Client</th>{% endif %}
+                <th>Chambre</th>
+                <th>Début</th>
+                <th>Fin</th>
+                <th>Nuits</th>
+                <th>Statut</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for r in reservations %}
+                <tr>
+                    {% if user.is_staff %}<td>{{ r.client.get_full_name|default:r.client.username }}</td>{% endif %}
+                    <td>{{ r.chambre.numero_chambre }} - {{ r.chambre.get_type_chambre_display }}</td>
+                    <td>{{ r.date_debut }}</td>
+                    <td>{{ r.date_fin }}</td>
+                    <td>{{ r.nombre_nuits }}</td>
+                    <td>{{ r.statut }}</td>
+                    <td><a href="{% url 'reservation_detail' r.pk %}" class="btn btn-sm btn-outline-secondary">Voir</a></td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="7" class="text-center py-4">Aucune réservation.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
